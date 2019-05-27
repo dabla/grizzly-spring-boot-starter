@@ -1,0 +1,17 @@
+target
+*.class
+*.jar
+pom.xml.releaseBackup
+release.properties
+
+# eclipse
+.project
+.settings
+.classpath
+
+# intellij
+.idea
+*.iml
+
+# mac
+.DS_Store
