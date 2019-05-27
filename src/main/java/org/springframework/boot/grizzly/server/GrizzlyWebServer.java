@@ -1,18 +1,12 @@
 package org.springframework.boot.grizzly.server;
 
+import java.io.Closeable;
+import java.io.IOException;
 import org.glassfish.grizzly.http.server.HttpServer;
-import org.slf4j.Logger;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.server.WebServerException;
 
-import java.io.Closeable;
-import java.io.IOException;
-
-import static org.slf4j.LoggerFactory.getLogger;
-
 class GrizzlyWebServer implements WebServer, Closeable {
-    private static final Logger LOGGER = getLogger(GrizzlyWebServer.class);
-
     private final HttpServer delegate;
 
     GrizzlyWebServer(HttpServer delegate) {
@@ -23,7 +17,6 @@ class GrizzlyWebServer implements WebServer, Closeable {
     public void start() throws WebServerException {
         try {
             delegate.start();
-            //LOGGER.info("Grizzly web server started at {}.", getURI(delegate).toURL());
         } catch (Exception e) {
             throw new WebServerException(e.getMessage(), e);
         }
@@ -43,14 +36,4 @@ class GrizzlyWebServer implements WebServer, Closeable {
     public void close() throws IOException {
         stop();
     }
-
-    /*private static URI getURI(HttpServer httpServer) throws URISyntaxException {
-        NetworkListener networkListener = httpServer.getListener("grizzly");
-        return new URIBuilder()
-                .setScheme(DEFAULT_SCHEME)
-                .setHost(networkListener.getHost())
-                .setPort(networkListener.getPort())
-                .setPath(PATH)
-                .build();
-    }*/
 }

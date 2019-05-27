@@ -1,16 +1,14 @@
 package org.springframework.boot.grizzly.http;
 
-import org.apache.http.client.utils.URIBuilder;
-import org.glassfish.grizzly.http.CompressionConfig;
-import org.glassfish.grizzly.http.CompressionConfig.CompressionMode;
-import org.glassfish.grizzly.http.server.CLStaticHttpHandler;
-import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.jersey.server.ResourceConfig;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Set;
+import org.apache.http.client.utils.URIBuilder;
+import org.glassfish.grizzly.http.CompressionConfig;
+import org.glassfish.grizzly.http.CompressionConfig.CompressionMode;
+import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.server.ResourceConfig;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Runtime.getRuntime;
@@ -111,16 +109,7 @@ public class HttpServerBuilder {
 	        compressionConfig.setCompressionMinSize(compressionMinSize); // the min amount of bytes to compress
 	        compressionConfig.setCompressableMimeTypes(compressableMimeTypes); // the mime types to compress
 	        
-	        addHttpHandler(httpServer, "/", "/");
-	        
 	        return httpServer;
-		}
-		
-		private void addHttpHandler(HttpServer httpServer, String directory, String docRoot) {
-			CLStaticHttpHandler httpHandler = new CLStaticHttpHandler(getClass().getClassLoader(), directory);
-			httpHandler.setFileCacheEnabled(false); // Disable cache because it's very very slow
-			httpServer.getServerConfiguration()
-					  .addHttpHandler(httpHandler, docRoot);
 		}
 	}
 }
