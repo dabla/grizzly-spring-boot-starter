@@ -1,6 +1,8 @@
 # Spring-Boot-Starter-Grizzly
 [![Build Status](https://travis-ci.org/dabla/spring-boot-starter-grizzly.svg?branch=master)](https://travis-ci.org/dabla/spring-boot-starter-grizzly)
 
+Spring Boot Starter module which easily allows you to use Grizzly as an alternative web container with JSP support.
+
 ## Code sample
 ```java
 package org.springframework.boot.grizzly;
@@ -25,10 +27,10 @@ public class GrizzlyApplication implements CommandLineRunner {
         return new ResourceConfig();
     }
 
-	@Override
-	public void run(String... args) throws Exception {
+    @Override
+    public void run(String... args) throws Exception {
 
-	}
+    }
 }
 
 ```
