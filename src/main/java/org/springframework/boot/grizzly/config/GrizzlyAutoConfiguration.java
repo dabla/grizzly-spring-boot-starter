@@ -22,6 +22,18 @@ public class GrizzlyAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    public static GrizzlyProperties grizzlyProperties() {
+        return new GrizzlyProperties();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public HttpServerFactory httpServerFactory() {
+        return new HttpServerFactory();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
     public GrizzlyServletWebServerFactory grizzlyServletWebServerFactory(Optional<ResourceConfig> resourceConfig, HttpServerFactory httpServerFactory) {
         return new GrizzlyServletWebServerFactory(httpServerFactory, resourceConfig.orElse(DEFAULT_RESOURCE_CONFIG)
                                                                                    .property("contextConfig", context));

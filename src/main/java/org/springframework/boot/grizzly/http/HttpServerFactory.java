@@ -2,7 +2,6 @@ package org.springframework.boot.grizzly.http;
 
 import java.net.URISyntaxException;
 import javax.inject.Inject;
-import javax.inject.Named;
 import org.apache.jasper.servlet.JspServlet;
 import org.glassfish.grizzly.http.server.CLStaticHttpHandler;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -15,7 +14,6 @@ import static java.lang.System.getProperty;
 import static org.apache.jasper.Constants.SERVLET_CLASSPATH;
 import static org.springframework.boot.grizzly.http.HttpServerBuilder.aHttpServer;
 
-@Named
 public class HttpServerFactory {
     @Inject
     private GrizzlyProperties properties;

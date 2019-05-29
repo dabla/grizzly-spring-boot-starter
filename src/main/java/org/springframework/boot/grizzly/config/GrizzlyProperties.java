@@ -1,6 +1,5 @@
 package org.springframework.boot.grizzly.config;
 
-import javax.inject.Named;
 import org.glassfish.grizzly.http.CompressionConfig.CompressionMode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -10,7 +9,6 @@ import static javax.ws.rs.core.MediaType.TEXT_HTML;
 import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
 import static org.glassfish.grizzly.http.CompressionConfig.CompressionMode.OFF;
 
-@Named
 @ConfigurationProperties(prefix = "grizzly")
 public class GrizzlyProperties {
     public static final int DEFAULT_COMPRESSION_MIN_SIZE = 10 * 1024;
@@ -27,7 +25,7 @@ public class GrizzlyProperties {
         private CompressionMode compressionMode = OFF;
         private String[] compressableMimeTypes = new String[] { APPLICATION_JSON, APPLICATION_XML, TEXT_JAVASCRIPT, TEXT_PLAIN, TEXT_HTML };
         private int minimumCompressionSize = DEFAULT_COMPRESSION_MIN_SIZE;
-        private String docRoot = "";
+        private String docRoot = "/";
         private String[] urlMapping = new String[] { "/" };
 
         public String getScheme() {
@@ -105,6 +103,8 @@ public class GrizzlyProperties {
 
     public static class Jsp {
         private String[] urlMapping = new String[] { "/*.jsp" };
+        private String[] listeners = new String[0];
+        private String[] filters = new String[0];
 
         public String[] getUrlMapping() {
             return urlMapping;
@@ -112,6 +112,22 @@ public class GrizzlyProperties {
 
         public void setUrlMapping(String... urlMapping) {
             this.urlMapping = urlMapping;
+        }
+
+        public String[] getListeners() {
+            return listeners;
+        }
+
+        public void setListeners(String[] listeners) {
+            this.listeners = listeners;
+        }
+
+        public String[] getFilters() {
+            return filters;
+        }
+
+        public void setFilters(String[] filters) {
+            this.filters = filters;
         }
     }
 
