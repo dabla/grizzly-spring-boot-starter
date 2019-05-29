@@ -25,7 +25,7 @@ public class GrizzlyProperties {
         private CompressionMode compressionMode = OFF;
         private String[] compressableMimeTypes = new String[] { APPLICATION_JSON, APPLICATION_XML, TEXT_JAVASCRIPT, TEXT_PLAIN, TEXT_HTML };
         private int minimumCompressionSize = DEFAULT_COMPRESSION_MIN_SIZE;
-        private String docRoot = "/";
+        private String[] docRoot = new String[] { "/" };
         private String[] urlMapping = new String[] { "/" };
 
         public String getScheme() {
@@ -84,11 +84,11 @@ public class GrizzlyProperties {
             this.minimumCompressionSize = minimumCompressionSize;
         }
 
-        public String getDocRoot() {
+        public String[] getDocRoot() {
             return docRoot;
         }
 
-        public void setDocRoot(String docRoot) {
+        public void setDocRoot(String[] docRoot) {
             this.docRoot = docRoot;
         }
 
