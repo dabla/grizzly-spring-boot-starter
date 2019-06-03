@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
 public class GrizzlyApplication implements CommandLineRunner {
 
     public static void main(String[] args) throws Exception {
-        SpringApplication.run(GrizzlyApplication.class, args);
+        run(args);
     }
 
     @Bean
@@ -29,7 +29,7 @@ public class GrizzlyApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
+        SpringApplication.run(GrizzlyApplication.class, args);
     }
 }
 
