@@ -21,6 +21,7 @@ public class GrizzlyProperties {
         private String scheme = "http";
         private String host = "0.0.0.0";
         private int port = 8080;
+        private String contextPath = "";
         private String path = "/";
         private CompressionMode compressionMode = OFF;
         private String[] compressableMimeTypes = new String[] { APPLICATION_JSON, APPLICATION_XML, TEXT_JAVASCRIPT, TEXT_PLAIN, TEXT_HTML };
@@ -50,6 +51,14 @@ public class GrizzlyProperties {
 
         public void setPort(int port) {
             this.port = port;
+        }
+
+        public String getContextPath() {
+            return contextPath;
+        }
+
+        public void setContextPath(String contextPath) {
+            this.contextPath = contextPath;
         }
 
         public String getPath() {

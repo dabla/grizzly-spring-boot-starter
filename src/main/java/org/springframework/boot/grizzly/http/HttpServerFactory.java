@@ -41,7 +41,7 @@ public class HttpServerFactory {
     }
 
     private void addJspServlet(HttpServer httpServer) {
-        WebappContext context = new WebappContext("WebappContext");
+        WebappContext context = new WebappContext("WebappContext", properties.getHttp().getContextPath());
         ServletRegistration jspRegistration = context.addServlet("JSPContainer", JspServlet.class);
         jspRegistration.addMapping(properties.getJsp().getUrlMapping());
         context.setAttribute(SERVLET_CLASSPATH, getProperty("java.class.path"));
