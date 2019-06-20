@@ -32,7 +32,21 @@ public class GrizzlyApplication implements CommandLineRunner {
 
     }
 }
+```
 
+## Properties
+```
+grizzly.http.scheme=http
+grizzly.http.host=0.0.0.0
+grizzly.http.port=8080
+grizzly.http.path=/
+grizzly.http.compressionMode=OFF
+grizzly.http.compressableMimeTypes=application/json,application/xml,text/javascript,text/plain,text/htm
+grizzly.http.minimumCompressionSize=10240
+grizzly.http.docRoot=/
+grizzly.http.urlMapping=/
+
+grizzly.jsp.urlMapping=/*.jsp
 ```
 
 ## How to use in your project
