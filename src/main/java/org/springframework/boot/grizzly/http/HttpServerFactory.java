@@ -24,7 +24,7 @@ public class HttpServerFactory {
                     .withScheme(properties.getHttp().getScheme())
                     .withHost(properties.getHttp().getHost())
                     .withPort(getProperty("http.webserver.port", String.valueOf(properties.getHttp().getPort())))
-                    .withPath(properties.getHttp().getPath())
+                    .withPath(properties.getHttp().getContextPath() + properties.getHttp().getPath())
                     .withResourceConfig(resourceConfig)
                     .withCompressionMode(properties.getHttp().getCompressionMode())
                     .withCompressableMimeTypes(properties.getHttp().getCompressableMimeTypes())
