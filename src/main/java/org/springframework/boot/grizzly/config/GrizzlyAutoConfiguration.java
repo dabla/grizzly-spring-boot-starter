@@ -43,10 +43,10 @@ public class GrizzlyAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public GrizzlyServletWebServerFactory grizzlyServletWebServerFactory(Optional<ResourceConfig> resourceConfig, HttpServerFactory httpServerFactory) {
-        return new GrizzlyServletWebServerFactory(httpServerFactory, configure(resourceConfig.orElse(DEFAULT_RESOURCE_CONFIG)));
+        return new GrizzlyServletWebServerFactory(httpServerFactory, register(resourceConfig.orElse(DEFAULT_RESOURCE_CONFIG)));
     }
 
-    private ResourceConfig configure(ResourceConfig resourceConfig) {
+    private ResourceConfig register(ResourceConfig resourceConfig) {
         for (Entry<String,ParamConverter> paramConverter : context.getBeansOfType(ParamConverter.class).entrySet()) {
             if (!resourceConfig.isRegistered(paramConverter.getValue())) {
                 resourceConfig.register(paramConverter.getValue());
