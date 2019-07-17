@@ -1,8 +1,10 @@
 package org.springframework.boot.grizzly.config;
 
+import java.lang.annotation.Annotation;
 import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Feature;
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.ParamConverter;
@@ -54,17 +56,21 @@ public class GrizzlyAutoConfiguration {
     private ResourceConfig register(ResourceConfig resourceConfig) {
         registerBeansOfType(resourceConfig, ParamConverter.class);
         registerBeansOfType(resourceConfig, ExceptionMapper.class);
+        registerBeansOfType(resourceConfig, Feature.class);
         registerBeansOfType(resourceConfig, ContextResolver.class);
-
-        for (Entry<String,Object> entry : context.getBeansWithAnnotation(Path.class).entrySet()) {
-            registerBeanOfType(resourceConfig, entry);
-        }
+        registerBeansWithAnnotation(resourceConfig, Path.class);
 
         return resourceConfig.property("contextConfig", context);
     }
 
-    private <T> void registerBeansOfType(ResourceConfig resourceConfig, Class<T> type) {
-        for (Entry<String,T> entry : context.getBeansOfType(type).entrySet()) {
+    private void registerBeansOfType(ResourceConfig resourceConfig, Class<?> type) {
+        for (Entry<String,?> entry : context.getBeansOfType(type).entrySet()) {
+            registerBeanOfType(resourceConfig, entry);
+        }
+    }
+
+    private void registerBeansWithAnnotation(ResourceConfig resourceConfig, Class<? extends Annotation> annotation) {
+        for (Entry<String,Object> entry : context.getBeansWithAnnotation(annotation).entrySet()) {
             registerBeanOfType(resourceConfig, entry);
         }
     }
