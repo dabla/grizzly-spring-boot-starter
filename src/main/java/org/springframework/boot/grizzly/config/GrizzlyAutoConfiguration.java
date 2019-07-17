@@ -1,9 +1,9 @@
 package org.springframework.boot.grizzly.config;
 
 import java.util.Map.Entry;
-import java.util.Optional;
 import javax.inject.Inject;
 import javax.ws.rs.Path;
+import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.ParamConverter;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -23,7 +23,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 @ConditionalOnClass(HttpServer.class)
 public class GrizzlyAutoConfiguration {
     private static final Logger LOGGER = getLogger(GrizzlyAutoConfiguration.class);
-    private static final ResourceConfig DEFAULT_RESOURCE_CONFIG = new ResourceConfig();
 
     @Inject
     private ApplicationContext context;
@@ -42,32 +41,38 @@ public class GrizzlyAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GrizzlyServletWebServerFactory grizzlyServletWebServerFactory(Optional<ResourceConfig> resourceConfig, HttpServerFactory httpServerFactory) {
-        return new GrizzlyServletWebServerFactory(httpServerFactory, register(resourceConfig.orElse(DEFAULT_RESOURCE_CONFIG)));
+    public ResourceConfig resourceConfig() {
+        return new ResourceConfig();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GrizzlyServletWebServerFactory grizzlyServletWebServerFactory(ResourceConfig resourceConfig, HttpServerFactory httpServerFactory) {
+        return new GrizzlyServletWebServerFactory(httpServerFactory, register(resourceConfig));
     }
 
     private ResourceConfig register(ResourceConfig resourceConfig) {
-        for (Entry<String,ParamConverter> paramConverter : context.getBeansOfType(ParamConverter.class).entrySet()) {
-            if (!resourceConfig.isRegistered(paramConverter.getValue())) {
-                resourceConfig.register(paramConverter.getValue());
-                LOGGER.info("Registered parameter converter named '{}'", paramConverter.getKey());
-            }
-        }
+        registerBeansOfType(resourceConfig, ParamConverter.class);
+        registerBeansOfType(resourceConfig, ExceptionMapper.class);
+        registerBeansOfType(resourceConfig, ContextResolver.class);
 
-        for (Entry<String,ExceptionMapper> exceptionMapper : context.getBeansOfType(ExceptionMapper.class).entrySet()) {
-            if (!resourceConfig.isRegistered(exceptionMapper.getValue())) {
-                resourceConfig.register(exceptionMapper.getValue());
-                LOGGER.info("Registered exception mapper named '{}'", exceptionMapper.getKey());
-            }
-        }
-
-        for (Entry<String,Object> resource : context.getBeansWithAnnotation(Path.class).entrySet()) {
-            if (!resourceConfig.isRegistered(resource.getValue().getClass())) {
-                resourceConfig.register(resource.getValue().getClass());
-                LOGGER.info("Registered resource named '{}'", resource.getKey());
-            }
+        for (Entry<String,Object> entry : context.getBeansWithAnnotation(Path.class).entrySet()) {
+            registerBeanOfType(resourceConfig, entry);
         }
 
         return resourceConfig.property("contextConfig", context);
+    }
+
+    private <T> void registerBeansOfType(ResourceConfig resourceConfig, Class<T> type) {
+        for (Entry<String,T> entry : context.getBeansOfType(type).entrySet()) {
+            registerBeanOfType(resourceConfig, entry);
+        }
+    }
+
+    private static void registerBeanOfType(ResourceConfig resourceConfig, Entry<String,?> entry) {
+        if (!resourceConfig.isRegistered(entry.getValue())) {
+            resourceConfig.register(entry.getValue());
+            LOGGER.info("Bean '{}' of type [{}] registered", entry.getKey(), entry.getValue().getClass());
+        }
     }
 }
