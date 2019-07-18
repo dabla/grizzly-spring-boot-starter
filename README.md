@@ -40,7 +40,11 @@ grizzly.http.port                   | 8080 | The network port to which the grizz
 grizzly.http.contextPath            | / | Context path is part of the URI on which the application handler will be deployed.
 grizzly.http.path                   | / | Path is part of the URI on which the application handler will be deployed.
 grizzly.http.compressionMode        | OFF | By default compression mode is disabled.
-grizzly.http.compressableMimeTypes  | application/json,application/xml,text/javascript,text/plain,text/htm |
+grizzly.http.compressableMimeTypes  | application/json, |
+                                    | application/xml, |
+                                    | text/javascript, |
+                                    | text/plain, |
+                                    | text/htm |
 grizzly.http.minimumCompressionSize | 10240 |
 grizzly.http.docRoot                | / | Physical location where grizzly will find it's contents (e.g. *.html or *.jsp files).
 grizzly.http.urlMapping             | / |
