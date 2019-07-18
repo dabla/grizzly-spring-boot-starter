@@ -54,7 +54,7 @@ It's possible to override the default properties listed here below.
 
 The URI on which the grizzly application handler will be deployed will be constructed as follow given the above parameters:
 
-[grizzly.http.scheme]://[grizzly.http.host]:[grizzly.http.port]/[grizzly.http.contextPath]/[grizzly.http.path] (http://0.0.0.0:8080/)
+${grizzly.http.scheme}://${grizzly.http.host}:${grizzly.http.port}/${grizzly.http.contextPath}/${grizzly.http.path} (http://0.0.0.0:8080/)
 
 For more information regarding the grizzly properties, please go the the [official documentation page](https://javaee.github.io/grizzly/httpserverframework.html).
 
