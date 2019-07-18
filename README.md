@@ -22,8 +22,12 @@ public class GrizzlyApplication {
     }
 
     @Bean
+    // Optional, but may be defined if for example additional properties like shown here bellow have to be passed.
     public ResourceConfig resourceConfig() {
-        return new ResourceConfig();
+        Map<String,Object> properties = new HashMap<>();
+        properties.put("com.sun.jersey.api.json.POJOMappingFeature", "true");
+        properties.put("com.sun.jersey.config.feature.trace", "ALL");
+        return new ResourceConfig().addProperties(properties);
     }
 }
 ```
