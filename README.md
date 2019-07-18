@@ -32,19 +32,19 @@ public class GrizzlyApplication {
 
 It's possible to override the default properties listed here below.
 
-| Parameter                           | Default value                                                        | Description                                                                                                                       |
-| ----------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| grizzly.http.scheme                 | http                                                                 | http / https                                                                                                                      |
-| grizzly.http.host                   | 0.0.0.0                                                              | The network host to which the grizzly network listener will bind. If not user specified, it will bind to 0.0.0.0 (default value). |
-| grizzly.http.port                   | 8080                                                                 | The network port to which the grizzly network will bind. If not user specified, it will bind to port 8080 (default value).        |
-| grizzly.http.contextPath            | /                                                                    | Context path is part of the URI on which the application handler will be deployed.                                                |
-| grizzly.http.path                   | /                                                                    | Path is part of the URI on which the application handler will be deployed.                                                        |
-| grizzly.http.compressionMode        | OFF                                                                  | By default compression mode is disabled.                                                                                          |
-| grizzly.http.compressableMimeTypes  | application/json,application/xml,text/javascript,text/plain,text/htm |                                                                                                                                   |
-| grizzly.http.minimumCompressionSize | 10240                                                                |                                                                                                                                   |
-| grizzly.http.docRoot                | /                                                                    | Physical location where grizzly will find it's contents (e.g. *.html or *.jsp files).                                             |
-| grizzly.http.urlMapping             | /                                                                    |                                                                                                                                   |
-| grizzly.jsp.urlMapping              | /*.jsp                                                               |                                                                                                                                   |
+Parameter | Default value | Description
+--- | --- | ---
+grizzly.http.scheme                 | http | http / https
+grizzly.http.host                   | 0.0.0.0 | The network host to which the grizzly network listener will bind. If not user specified, it will bind to 0.0.0.0 (default value).
+grizzly.http.port                   | 8080 | The network port to which the grizzly network will bind. If not user specified, it will bind to port 8080 (default value).
+grizzly.http.contextPath            | / | Context path is part of the URI on which the application handler will be deployed.
+grizzly.http.path                   | / | Path is part of the URI on which the application handler will be deployed.
+grizzly.http.compressionMode        | OFF | By default compression mode is disabled.
+grizzly.http.compressableMimeTypes  | application/json,application/xml,text/javascript,text/plain,text/htm |
+grizzly.http.minimumCompressionSize | 10240 |
+grizzly.http.docRoot                | / | Physical location where grizzly will find it's contents (e.g. *.html or *.jsp files).
+grizzly.http.urlMapping             | / |
+grizzly.jsp.urlMapping              | /*.jsp |
 
 The URI on which the grizzly application handler will be deployed will be constructed as follow given the above parameters:
 
