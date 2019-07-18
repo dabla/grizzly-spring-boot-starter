@@ -1,4 +1,4 @@
-package org.springframework.boot.grizzly.server;
+package be.dabla.boot.grizzly.server;
 
 import java.io.IOException;
 import org.glassfish.grizzly.http.server.HttpServer;

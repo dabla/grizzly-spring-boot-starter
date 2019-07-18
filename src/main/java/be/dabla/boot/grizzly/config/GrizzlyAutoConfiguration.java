@@ -1,5 +1,7 @@
-package org.springframework.boot.grizzly.config;
+package be.dabla.boot.grizzly.config;
 
+import be.dabla.boot.grizzly.http.HttpServerFactory;
+import be.dabla.boot.grizzly.server.GrizzlyServletWebServerFactory;
 import java.lang.annotation.Annotation;
 import java.util.Map.Entry;
 import javax.inject.Inject;
@@ -13,8 +15,6 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.grizzly.http.HttpServerFactory;
-import org.springframework.boot.grizzly.server.GrizzlyServletWebServerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

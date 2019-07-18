@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <groupId>be.dabla</groupId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>spring-boot-starter-grizzly</artifactId>
+    <artifactId>grizzly-spring-boot-starter</artifactId>
     <packaging>jar</packaging>
 
-    <name>spring-boot-starter-grizzly</name>
+    <name>grizzly-spring-boot-starter</name>
     <description>Starter for using Grizzly as the embedded servlet container.</description>
-    <url>https://github.com/dabla/spring-boot-starter-grizzly</url>
+    <url>https://github.com/dabla/grizzly-spring-boot-starter</url>
 
     <licenses>
         <license>
@@ -383,14 +383,14 @@
     </profiles>
 
     <scm>
-        <url>https://github.com/dabla/spring-boot-starter-grizzly</url>
-        <connection>scm:git:https://github.com/dabla/spring-boot-starter-grizzly.git</connection>
-        <developerConnection>scm:git:https://github.com/dabla/spring-boot-starter-grizzly.git</developerConnection>
+        <url>https://github.com/dabla/grizzly-spring-boot-starter</url>
+        <connection>scm:git:https://github.com/dabla/grizzly-spring-boot-starter.git</connection>
+        <developerConnection>scm:git:https://github.com/dabla/grizzly-spring-boot-starter.git</developerConnection>
         <tag>v1.0</tag>
     </scm>
 
     <issueManagement>
-        <url>https://github.com/dabla/spring-boot-starter-grizzly</url>
+        <url>https://github.com/dabla/grizzly-spring-boot-starter</url>
     </issueManagement>
 
     <developers>

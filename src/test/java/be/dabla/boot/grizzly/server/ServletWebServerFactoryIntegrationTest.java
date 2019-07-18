@@ -1,11 +1,11 @@
-package org.springframework.boot.grizzly.server;
+package be.dabla.boot.grizzly.server;
 
 import javax.inject.Inject;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.boot.grizzly.GrizzlyApplication;
+import be.dabla.boot.grizzly.GrizzlyApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;

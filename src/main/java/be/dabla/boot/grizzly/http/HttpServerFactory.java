@@ -1,4 +1,4 @@
-package org.springframework.boot.grizzly.http;
+package be.dabla.boot.grizzly.http;
 
 import java.net.URISyntaxException;
 import javax.inject.Inject;
@@ -8,11 +8,11 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.servlet.ServletRegistration;
 import org.glassfish.grizzly.servlet.WebappContext;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.springframework.boot.grizzly.config.GrizzlyProperties;
+import be.dabla.boot.grizzly.config.GrizzlyProperties;
 
 import static java.lang.System.getProperty;
 import static org.apache.jasper.Constants.SERVLET_CLASSPATH;
-import static org.springframework.boot.grizzly.http.HttpServerBuilder.aHttpServer;
+import static be.dabla.boot.grizzly.http.HttpServerBuilder.aHttpServer;
 
 public class HttpServerFactory {
     @Inject

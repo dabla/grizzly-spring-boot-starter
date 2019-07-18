@@ -1,4 +1,4 @@
-package org.springframework.boot.grizzly.http;
+package be.dabla.boot.grizzly.http;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -17,7 +17,7 @@ import static java.util.Collections.emptySet;
 import static java.util.Collections.unmodifiableSet;
 import static org.glassfish.grizzly.http.CompressionConfig.CompressionMode.OFF;
 import static org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory.createHttpServer;
-import static org.springframework.boot.grizzly.config.GrizzlyProperties.DEFAULT_COMPRESSION_MIN_SIZE;
+import static be.dabla.boot.grizzly.config.GrizzlyProperties.DEFAULT_COMPRESSION_MIN_SIZE;
 
 public class HttpServerBuilder {
 	private final URIBuilder uriBuilder;

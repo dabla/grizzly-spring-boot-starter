@@ -1,11 +1,11 @@
-# Spring-Boot-Starter-Grizzly
-[![Build Status](https://travis-ci.org/dabla/spring-boot-starter-grizzly.svg?branch=master)](https://travis-ci.org/dabla/spring-boot-starter-grizzly)
+# Grizzly-Spring-Boot-Starter
+[![Build Status](https://travis-ci.org/dabla/grizzly-spring-boot-starter.svg?branch=master)](https://travis-ci.org/dabla/grizzly-spring-boot-starter)
 
 Spring Boot Starter module which easily allows you to use Grizzly as an alternative web container with JSP support.  REST services exposed as Spring beans will be automatically registered.
 
 ## Code sample
 ```java
-package org.springframework.boot.grizzly;
+package be.dabla.boot.grizzly;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.SpringApplication;
@@ -64,7 +64,7 @@ Example for Maven:
 ```xml
 <dependency>
     <groupId>be.dabla</groupId>
-    <artifactId>spring-boot-starter-grizzly</artifactId>
+    <artifactId>grizzly-spring-boot-starter</artifactId>
     <version>1.0</version>
 </dependency>
 ```

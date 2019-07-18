@@ -1,4 +1,4 @@
-package org.springframework.boot.grizzly.config;
+package be.dabla.boot.grizzly.config;
 
 import org.glassfish.grizzly.http.CompressionConfig.CompressionMode;
 import org.springframework.boot.context.properties.ConfigurationProperties;

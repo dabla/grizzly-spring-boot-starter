@@ -1,4 +1,4 @@
-package org.springframework.boot.grizzly;
+package be.dabla.boot.grizzly;
 
 import javax.inject.Inject;
 import org.springframework.boot.SpringApplication;

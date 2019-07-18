@@ -1,7 +1,7 @@
-package org.springframework.boot.grizzly.server;
+package be.dabla.boot.grizzly.server;
 
+import be.dabla.boot.grizzly.http.HttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-import org.springframework.boot.grizzly.http.HttpServerFactory;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;

@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.springframework.boot.grizzly.config.GrizzlyAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=be.dabla.boot.grizzly.config.GrizzlyAutoConfiguration
