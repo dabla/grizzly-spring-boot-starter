@@ -22,7 +22,7 @@ public class GrizzlyApplication {
     }
 
     @Bean
-    // Optional, but may be defined if for example additional properties like shown here bellow have to be passed.
+    // Optional, but may be defined if for example additional properties like shown here below have to be passed.
     public ResourceConfig resourceConfig() {
         Map<String,Object> properties = new HashMap<>();
         properties.put("com.sun.jersey.api.json.POJOMappingFeature", "true");
