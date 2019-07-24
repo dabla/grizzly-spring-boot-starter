@@ -18,14 +18,35 @@ public class GrizzlyProperties {
     private final Jsp jsp = new Jsp();
 
     public static class Http {
+        /**
+         * http / https
+         */
         private String scheme = "http";
+        /**
+         * The network host to which the grizzly network listener will bind. If not user specified, it will bind to 0.0.0.0 (default value).
+         */
         private String host = "0.0.0.0";
+        /**
+         * The network port to which the grizzly network will bind. If not user specified, it will bind to port 8080 (default value).
+         */
         private int port = 8080;
+        /**
+         * Context path is part of the URI on which the application handler will be deployed.
+         */
         private String contextPath = "";
+        /**
+         * Path is part of the URI on which the application handler will be deployed.
+         */
         private String path = "/";
+        /**
+         * By default compression mode is disabled.
+         */
         private CompressionMode compressionMode = OFF;
         private String[] compressableMimeTypes = new String[] { APPLICATION_JSON, APPLICATION_XML, TEXT_JAVASCRIPT, TEXT_PLAIN, TEXT_HTML };
         private int minimumCompressionSize = DEFAULT_COMPRESSION_MIN_SIZE;
+        /**
+         * Physical location where grizzly will find it's contents (e.g. *.html or *.jsp files).
+         */
         private String[] docRoot = new String[] { "/" };
         private String[] urlMapping = new String[] { "/" };
 
