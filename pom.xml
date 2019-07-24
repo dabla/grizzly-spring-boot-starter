@@ -29,8 +29,7 @@
     </distributionManagement>
 
     <properties>
-        <spring-boot.version>2.1.5.RELEASE</spring-boot.version>
-        <spring.version>5.1.7.RELEASE</spring.version>
+        <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
         <grizzly.version>2.4.4</grizzly.version>
         <jersey.version>2.27</jersey.version>
         <httpclient.version>4.5.2</httpclient.version>
@@ -218,12 +217,6 @@
                     <artifactId>assertj-core</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.glassfish.web</groupId>
