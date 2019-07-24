@@ -42,11 +42,7 @@ It's possible to override the default properties listed here below.
 | grizzly.http.context-path            | / | Context path is part of the URI on which the application handler will be deployed. |
 | grizzly.http.path                    | / | Path is part of the URI on which the application handler will be deployed. |
 | grizzly.http.compression-mode        | OFF | By default compression mode is disabled. |
-| grizzly.http.compressable-mime-types | application/json,<br/>
-                                         application/xml,<br/>
-                                         text/javascript,<br/>
-                                         text/plain,<br/>
-                                         text/htm | |
+| grizzly.http.compressable-mime-types | application/json,<br/>application/xml,<br/>text/javascript,<br/>text/plain,<br/>text/htm | |
 | grizzly.http.minimum-compression-size| 10240 | |
 | grizzly.http.doc-root                | / | Physical location where grizzly will find it's contents (e.g. *.html or *.jsp files). |
 | grizzly.http.url-mapping             | / | |
