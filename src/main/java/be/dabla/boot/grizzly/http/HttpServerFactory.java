@@ -1,18 +1,20 @@
 package be.dabla.boot.grizzly.http;
 
+import be.dabla.boot.grizzly.config.GrizzlyProperties;
 import java.net.URISyntaxException;
 import javax.inject.Inject;
 import org.apache.jasper.servlet.JspServlet;
 import org.glassfish.grizzly.http.server.CLStaticHttpHandler;
+import org.glassfish.grizzly.http.server.HttpHandlerRegistration;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.servlet.ServletRegistration;
 import org.glassfish.grizzly.servlet.WebappContext;
 import org.glassfish.jersey.server.ResourceConfig;
-import be.dabla.boot.grizzly.config.GrizzlyProperties;
 
+import static be.dabla.boot.grizzly.http.HttpServerBuilder.aHttpServer;
 import static java.lang.System.getProperty;
 import static org.apache.jasper.Constants.SERVLET_CLASSPATH;
-import static be.dabla.boot.grizzly.http.HttpServerBuilder.aHttpServer;
+import static org.glassfish.grizzly.http.server.HttpHandlerRegistration.builder;
 
 public class HttpServerFactory {
     @Inject
@@ -51,7 +53,13 @@ public class HttpServerFactory {
     private void addHttpHandler(HttpServer httpServer) {
         CLStaticHttpHandler httpHandler = new CLStaticHttpHandler(getClass().getClassLoader(), properties.getHttp().getDocRoot());
         httpHandler.setFileCacheEnabled(false); // Disable cache because it's very very slow
-        httpServer.getServerConfiguration()
-                  .addHttpHandler(httpHandler, properties.getHttp().getUrlMapping());
+
+        for (String urlMapping : properties.getHttp().getUrlMapping()) {
+            HttpHandlerRegistration mapping = builder().contextPath(properties.getHttp().getContextPath())
+                                                       .urlPattern(urlMapping)
+                                                       .build();
+            httpServer.getServerConfiguration()
+                      .addHttpHandler(httpHandler, mapping);
+        }
     }
 }
