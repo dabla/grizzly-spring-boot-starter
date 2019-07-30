@@ -1,17 +1,20 @@
 package be.dabla.boot.grizzly.server;
 
 import be.dabla.boot.grizzly.http.HttpServerFactory;
+import javax.inject.Inject;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.boot.web.server.WebServer;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 
 public class GrizzlyServletWebServerFactory implements ServletWebServerFactory {
-    private final HttpServerFactory httpServerFactory;
+
     private final ResourceConfig resourceConfig;
 
-    public GrizzlyServletWebServerFactory(HttpServerFactory httpServerFactory, ResourceConfig resourceConfig) {
-        this.httpServerFactory = httpServerFactory;
+    @Inject
+    private HttpServerFactory httpServerFactory;
+
+    public GrizzlyServletWebServerFactory(ResourceConfig resourceConfig) {
         this.resourceConfig = resourceConfig;
     }
 

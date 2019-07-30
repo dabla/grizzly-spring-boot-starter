@@ -3,6 +3,7 @@ package be.dabla.boot.grizzly.config;
 import be.dabla.boot.grizzly.http.HttpServerFactory;
 import be.dabla.boot.grizzly.server.GrizzlyServletWebServerFactory;
 import java.lang.annotation.Annotation;
+import java.util.Collection;
 import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.ws.rs.Path;
@@ -11,6 +12,7 @@ import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.ParamConverter;
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.grizzly.servlet.WebappContext;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -18,6 +20,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.ServletContextAware;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -49,8 +52,16 @@ public class GrizzlyAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public GrizzlyServletWebServerFactory grizzlyServletWebServerFactory(ResourceConfig resourceConfig, HttpServerFactory httpServerFactory) {
-        return new GrizzlyServletWebServerFactory(httpServerFactory, register(resourceConfig));
+    public WebappContext webappContext(GrizzlyProperties properties, Collection<ServletContextAware> servletContexts) {
+        WebappContext webappContext = new WebappContext("WebappContext", properties.getHttp().getPath());
+        servletContexts.forEach(servletContext -> servletContext.setServletContext(webappContext));
+        return webappContext;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public GrizzlyServletWebServerFactory grizzlyServletWebServerFactory(ResourceConfig resourceConfig) {
+        return new GrizzlyServletWebServerFactory(register(resourceConfig));
     }
 
     private ResourceConfig register(ResourceConfig resourceConfig) {
