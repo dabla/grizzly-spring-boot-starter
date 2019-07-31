@@ -10,6 +10,7 @@ import org.glassfish.grizzly.http.CompressionConfig.CompressionMode;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import static be.dabla.boot.grizzly.config.GrizzlyProperties.DEFAULT_COMPRESSION_MIN_SIZE;
 import static java.lang.Integer.parseInt;
 import static java.lang.Runtime.getRuntime;
 import static java.util.Arrays.asList;
@@ -17,7 +18,6 @@ import static java.util.Collections.emptySet;
 import static java.util.Collections.unmodifiableSet;
 import static org.glassfish.grizzly.http.CompressionConfig.CompressionMode.OFF;
 import static org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory.createHttpServer;
-import static be.dabla.boot.grizzly.config.GrizzlyProperties.DEFAULT_COMPRESSION_MIN_SIZE;
 
 public class HttpServerBuilder {
 	private final URIBuilder uriBuilder;
@@ -60,7 +60,7 @@ public class HttpServerBuilder {
 	
 	public BuildableHttpServer withResourceConfig(ResourceConfig resourceConfig) throws URISyntaxException {
 		return new BuildableHttpServer(uriBuilder.build(),
-									   resourceConfig);
+									   new ResourceConfig(resourceConfig));
 	}
 	
 	public static class BuildableHttpServer {

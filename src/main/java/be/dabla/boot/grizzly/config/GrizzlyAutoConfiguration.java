@@ -20,6 +20,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static java.lang.System.getProperty;
+import static org.apache.jasper.Constants.SERVLET_CLASSPATH;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @Configuration
@@ -51,7 +53,9 @@ public class GrizzlyAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public WebappContext webappContext(GrizzlyProperties properties) {
-        return new WebappContext("WebappContext", properties.getHttp().getContextPath(), properties.getHttp().getPath());
+        WebappContext webappContext = new WebappContext("WebappContext", properties.getHttp().getContextPath());
+        webappContext.setAttribute(SERVLET_CLASSPATH, getProperty("java.class.path"));
+        return webappContext;
     }
 
     @Bean

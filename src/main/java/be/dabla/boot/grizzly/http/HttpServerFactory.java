@@ -2,7 +2,9 @@ package be.dabla.boot.grizzly.http;
 
 import be.dabla.boot.grizzly.config.GrizzlyProperties;
 import java.net.URISyntaxException;
+import java.util.function.Consumer;
 import javax.inject.Inject;
+import javax.servlet.ServletException;
 import org.apache.jasper.servlet.JspServlet;
 import org.glassfish.grizzly.http.server.CLStaticHttpHandler;
 import org.glassfish.grizzly.http.server.HttpHandlerRegistration;
@@ -10,19 +12,24 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.servlet.ServletRegistration;
 import org.glassfish.grizzly.servlet.WebappContext;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.slf4j.Logger;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
 
 import static be.dabla.boot.grizzly.http.HttpServerBuilder.aHttpServer;
 import static java.lang.System.getProperty;
-import static org.apache.jasper.Constants.SERVLET_CLASSPATH;
+import static java.util.stream.Stream.of;
 import static org.glassfish.grizzly.http.server.HttpHandlerRegistration.builder;
+import static org.slf4j.LoggerFactory.getLogger;
 
 public class HttpServerFactory {
+    private static final Logger LOGGER = getLogger(HttpServerFactory.class);
+
     @Inject
     private GrizzlyProperties properties;
     @Inject
-    private WebappContext context;
+    private WebappContext webappContext;
 
-    public HttpServer create(ResourceConfig resourceConfig) {
+    public HttpServer create(ResourceConfig resourceConfig, ServletContextInitializer... initializers) {
         try {
             HttpServer httpServer = aHttpServer()
                     .withScheme(properties.getHttp().getScheme())
@@ -36,18 +43,34 @@ public class HttpServerFactory {
                     .build();
 
             addHttpHandler(httpServer);
-            addJspServlet(httpServer);
-
+            addJspServlet();
+            addServlets(initializers);
+            webappContext.deploy(httpServer);
             return httpServer;
         } catch (URISyntaxException e) {
            throw new RuntimeException(e);
         }
     }
 
-    private void addJspServlet(HttpServer httpServer) {
-        ServletRegistration jspRegistration = context.addServlet("JSPContainer", JspServlet.class);
-        jspRegistration.addMapping(properties.getJsp().getUrlMapping());
-        context.setAttribute(SERVLET_CLASSPATH, getProperty("java.class.path"));
+    private void addServlets(ServletContextInitializer[] initializers) {
+        of(initializers).forEach(onStartup(webappContext));
+    }
+
+    private static Consumer<ServletContextInitializer> onStartup(WebappContext webappContext) {
+        return initializer -> {
+            try {
+                initializer.onStartup(webappContext);
+            } catch (ServletException e) {
+                throw new IllegalStateException(e);
+            } catch (UnsupportedOperationException e) {
+                LOGGER.warn("{}: {}", e.getClass().getName(), e.getMessage());
+            }
+        };
+    }
+
+    private void addJspServlet() {
+        ServletRegistration registration = webappContext.addServlet("JSPContainer", JspServlet.class);
+        registration.addMapping(properties.getJsp().getUrlMapping());
     }
 
     private void addHttpHandler(HttpServer httpServer) {
