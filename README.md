@@ -65,5 +65,17 @@ Example for Maven:
     <artifactId>grizzly-spring-boot-starter</artifactId>
     <version>1.1</version>
 </dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+    <version>2.1.6.RELEASE</version>
+    <exclusions>
+        <exclusion>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+     </exclusions>
+</dependency>
 ```
+
 Maven artifact can be found on Maven Central.
