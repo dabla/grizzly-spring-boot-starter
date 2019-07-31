@@ -3,7 +3,6 @@ package be.dabla.boot.grizzly.config;
 import be.dabla.boot.grizzly.http.HttpServerFactory;
 import be.dabla.boot.grizzly.server.GrizzlyServletWebServerFactory;
 import java.lang.annotation.Annotation;
-import java.util.Collection;
 import java.util.Map.Entry;
 import javax.inject.Inject;
 import javax.ws.rs.Path;
@@ -20,7 +19,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.context.ServletContextAware;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -52,10 +50,8 @@ public class GrizzlyAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public WebappContext webappContext(GrizzlyProperties properties, Collection<ServletContextAware> servletContexts) {
-        WebappContext webappContext = new WebappContext("WebappContext", properties.getHttp().getPath());
-        servletContexts.forEach(servletContext -> servletContext.setServletContext(webappContext));
-        return webappContext;
+    public WebappContext webappContext(GrizzlyProperties properties) {
+        return new WebappContext("WebappContext", properties.getHttp().getContextPath(), properties.getHttp().getPath());
     }
 
     @Bean
