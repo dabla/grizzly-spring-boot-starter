@@ -9,7 +9,6 @@ import org.apache.jasper.servlet.JspServlet;
 import org.glassfish.grizzly.http.server.CLStaticHttpHandler;
 import org.glassfish.grizzly.http.server.HttpHandlerRegistration;
 import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.grizzly.servlet.ServletRegistration;
 import org.glassfish.grizzly.servlet.WebappContext;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
@@ -69,8 +68,8 @@ public class HttpServerFactory {
     }
 
     private void addJspServlet() {
-        ServletRegistration registration = webappContext.addServlet("JSPContainer", JspServlet.class);
-        registration.addMapping(properties.getJsp().getUrlMapping());
+        webappContext.addServlet("JSPContainer", JspServlet.class)
+                     .addMapping(properties.getJsp().getUrlMapping());
     }
 
     private void addHttpHandler(HttpServer httpServer) {
