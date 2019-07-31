@@ -78,4 +78,4 @@ Example for Maven:
 </dependency>
 ```
 
-Maven artifact can be found on Maven Central.
+Maven artifact can be found on [Maven Central](https://mvnrepository.com/artifact/be.dabla/grizzly-spring-boot-starter).
