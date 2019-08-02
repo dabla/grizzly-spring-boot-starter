@@ -53,6 +53,7 @@ public class GrizzlyAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public WebappContext webappContext(GrizzlyProperties properties) {
+        LOGGER.info("Running with {} v{}", GrizzlyAutoConfiguration.class.getPackage().getSpecificationTitle(), GrizzlyAutoConfiguration.class.getPackage().getSpecificationVersion());
         WebappContext webappContext = new WebappContext("WebappContext", properties.getHttp().getContextPath());
         webappContext.setAttribute(SERVLET_CLASSPATH, getProperty("java.class.path"));
         return webappContext;
