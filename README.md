@@ -76,7 +76,7 @@ Example for Maven:
 <dependency>
     <groupId>be.dabla</groupId>
     <artifactId>grizzly-spring-boot-starter</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>
