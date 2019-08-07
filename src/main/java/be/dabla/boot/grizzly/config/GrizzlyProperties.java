@@ -1,54 +1,39 @@
 package be.dabla.boot.grizzly.config;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import javax.inject.Inject;
 import org.glassfish.grizzly.http.CompressionConfig.CompressionMode;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.util.unit.DataSize;
 
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
-import static javax.ws.rs.core.MediaType.APPLICATION_XML;
-import static javax.ws.rs.core.MediaType.TEXT_HTML;
-import static javax.ws.rs.core.MediaType.TEXT_PLAIN;
+import static java.util.Optional.ofNullable;
 import static org.glassfish.grizzly.http.CompressionConfig.CompressionMode.OFF;
+import static org.glassfish.grizzly.http.CompressionConfig.CompressionMode.ON;
 
 @ConfigurationProperties(prefix = "grizzly")
 public class GrizzlyProperties {
-    public static final int DEFAULT_COMPRESSION_MIN_SIZE = 10 * 1024;
-    public static final String TEXT_JAVASCRIPT = "text/javascript";
+    @Inject
+    private ServerProperties serverProperties;
 
     private final Http http = new Http();
     private final Jsp jsp = new Jsp();
 
-    public static class Http {
+    public class Http {
         /**
          * http / https
          */
-        private String scheme = "http";
-        /**
-         * The network host to which the grizzly network listener will bind. If not user specified, it will bind to 0.0.0.0 (default value).
-         */
-        private String host = "0.0.0.0";
-        /**
+        private String scheme = "http";/**
+         /**
          * The network port to which the grizzly network will bind. If not user specified, it will bind to port 8080 (default value).
          */
         private int port = 8080;
         /**
-         * Context path is part of the URI on which the application handler will be deployed.
-         */
-        private String contextPath = "";
-        /**
-         * Path is part of the URI on which the application handler will be deployed.
-         */
-        private String path = "/";
-        /**
-         * By default compression mode is disabled.
-         */
-        private CompressionMode compressionMode = OFF;
-        private String[] compressableMimeTypes = new String[] { APPLICATION_JSON, APPLICATION_XML, TEXT_JAVASCRIPT, TEXT_PLAIN, TEXT_HTML };
-        private int minimumCompressionSize = DEFAULT_COMPRESSION_MIN_SIZE;
-        /**
          * Physical location where grizzly will find it's contents (e.g. *.html or *.jsp files).
          */
         private String[] docRoot = new String[] { "/" };
-        private String[] urlMapping = new String[] { "/" };
+        private String[] urlMapping = new String[] { "/*.*" };
 
         public String getScheme() {
             return scheme;
@@ -58,60 +43,33 @@ public class GrizzlyProperties {
             this.scheme = scheme;
         }
 
-        public String getHost() {
-            return host;
-        }
-
-        public void setHost(String host) {
-            this.host = host;
-        }
-
         public int getPort() {
-            return port;
+            Integer port = ofNullable(serverProperties.getPort()).orElse(-1);
+            return port.intValue() == -1 ? this.port : port;
         }
 
         public void setPort(int port) {
             this.port = port;
         }
 
+        public String getHost() throws UnknownHostException {
+            return ofNullable(serverProperties.getAddress()).orElse(InetAddress.getByName("0.0.0.0")).getHostAddress();
+        }
+
         public String getContextPath() {
-            return contextPath;
-        }
-
-        public void setContextPath(String contextPath) {
-            this.contextPath = contextPath;
-        }
-
-        public String getPath() {
-            return path;
-        }
-
-        public void setPath(String path) {
-            this.path = path;
+            return ofNullable(serverProperties.getServlet().getContextPath()).orElse("/");
         }
 
         public CompressionMode getCompressionMode() {
-            return compressionMode;
-        }
-
-        public void setCompressionMode(CompressionMode compressionMode) {
-            this.compressionMode = compressionMode;
+            return serverProperties.getCompression().getEnabled() ? ON : OFF;
         }
 
         public String[] getCompressableMimeTypes() {
-            return compressableMimeTypes;
+            return serverProperties.getCompression().getMimeTypes();
         }
 
-        public void setCompressableMimeTypes(String... compressableMimeTypes) {
-            this.compressableMimeTypes = compressableMimeTypes;
-        }
-
-        public int getMinimumCompressionSize() {
-            return minimumCompressionSize;
-        }
-
-        public void setMinimumCompressionSize(int minimumCompressionSize) {
-            this.minimumCompressionSize = minimumCompressionSize;
+        public DataSize getMinimumCompressionSize() {
+            return serverProperties.getCompression().getMinResponseSize();
         }
 
         public String[] getDocRoot() {
@@ -131,10 +89,8 @@ public class GrizzlyProperties {
         }
     }
 
-    public static class Jsp {
+    public class Jsp {
         private String[] urlMapping = new String[] { "/*.jsp" };
-        private String[] listeners = new String[0];
-        private String[] filters = new String[0];
 
         public String[] getUrlMapping() {
             return urlMapping;
@@ -144,20 +100,12 @@ public class GrizzlyProperties {
             this.urlMapping = urlMapping;
         }
 
-        public String[] getListeners() {
-            return listeners;
+        public boolean isRegistered() {
+            return serverProperties.getServlet().getJsp().getRegistered();
         }
 
-        public void setListeners(String[] listeners) {
-            this.listeners = listeners;
-        }
-
-        public String[] getFilters() {
-            return filters;
-        }
-
-        public void setFilters(String[] filters) {
-            this.filters = filters;
+        public String getServlet() {
+            return serverProperties.getServlet().getJsp().getClassName();
         }
     }
 

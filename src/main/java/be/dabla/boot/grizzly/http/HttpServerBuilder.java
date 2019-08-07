@@ -9,8 +9,8 @@ import org.glassfish.grizzly.http.CompressionConfig;
 import org.glassfish.grizzly.http.CompressionConfig.CompressionMode;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.springframework.util.unit.DataSize;
 
-import static be.dabla.boot.grizzly.config.GrizzlyProperties.DEFAULT_COMPRESSION_MIN_SIZE;
 import static java.lang.Integer.parseInt;
 import static java.lang.Runtime.getRuntime;
 import static java.util.Arrays.asList;
@@ -67,7 +67,7 @@ public class HttpServerBuilder {
 		private final URI uri;
 		private final ResourceConfig resourceConfig;
 		private CompressionMode compressionMode = OFF;
-		private int compressionMinSize = DEFAULT_COMPRESSION_MIN_SIZE;
+		private Long compressionMinSize = DataSize.ofKilobytes(2).toBytes();
 		private Set<String> compressableMimeTypes = emptySet();
 
 		private BuildableHttpServer(URI uri, ResourceConfig resourceConfig) {
@@ -79,8 +79,8 @@ public class HttpServerBuilder {
 			this.compressionMode = compressionMode;
 			return this;
 		}
-		
-		public BuildableHttpServer withCompressionMinSize(int compressionMinSize) {
+
+		public BuildableHttpServer withCompressionMinSize(Long compressionMinSize) {
 			this.compressionMinSize = compressionMinSize;
 			return this;
 		}
@@ -106,7 +106,7 @@ public class HttpServerBuilder {
 	        
 	        CompressionConfig compressionConfig = httpServer.getListener("grizzly").getCompressionConfig();
 	        compressionConfig.setCompressionMode(compressionMode); // the mode
-	        compressionConfig.setCompressionMinSize(compressionMinSize); // the min amount of bytes to compress
+	        compressionConfig.setCompressionMinSize(compressionMinSize.intValue()); // the min amount of bytes to compress
 	        compressionConfig.setCompressableMimeTypes(compressableMimeTypes); // the mime types to compress
 	        
 	        return httpServer;

@@ -32,25 +32,38 @@ public class GrizzlyApplication {
 
 ## Properties
 
-It's possible to override the default properties listed here below.
+It's possible to override the [default properties](https://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html) listed here below.
 
 | Parameter | Default value | Description |
 | --- | --- | --- |
-| grizzly.http.scheme                  | http | http / https |
-| grizzly.http.host                    | 0.0.0.0 | The network host to which the grizzly network listener will bind. If not user specified, it will bind to 0.0.0.0 (default value). |
-| grizzly.http.port                    | 8080 | The network port to which the grizzly network will bind. If not user specified, it will bind to port 8080 (default value). |
-| grizzly.http.context-path            | / | Context path is part of the URI on which the application handler will be deployed. |
-| grizzly.http.path                    | / | Path is part of the URI on which the application handler will be deployed. |
-| grizzly.http.compression-mode        | OFF | By default compression mode is disabled. |
-| grizzly.http.compressable-mime-types | application/json,<br/>application/xml,<br/>text/javascript,<br/>text/plain,<br/>text/htm | |
-| grizzly.http.minimum-compression-size| 10240 | |
-| grizzly.http.doc-root                | / | Physical location where grizzly will find it's contents (e.g. *.html or *.jsp files). |
-| grizzly.http.url-mapping             | / | |
-| grizzly.jsp.url-mapping              | /*.jsp | |
+| grizzly.http.scheme                     | http | http / https |
+| grizzly.http.doc-root                   | / | Physical location where grizzly will find it's contents (e.g. *.html or *.jsp files). |
+| grizzly.http.url-mapping                | / | |
+| grizzly.jsp.url-mapping                 | /*.jsp | |
+| server.address                          | 0.0.0.0 | The network host to which the grizzly network listener will bind. If not user specified, it will bind to 0.0.0.0 (default value). |
+| server.port                             | 8080 | The network port to which the grizzly network will bind. If not user specified, it will bind to port 8080 (default value). |
+| server.compression.enabled              | false | By default compression mode is disabled. |
+| server.compression.mime-types           | application/json,<br/>application/xml,<br/>text/javascript,<br/>text/plain,<br/>text/htm | |
+| server.compression.min-response-size    | 2KB | |
+| server.servlet.context-path             | / | Context path is part of the URI on which the application handler will be deployed. |
+| server.servlet.application-display-name | application | Display name of the application. |
+| server.servlet.jsp.class-name           | org.apache.jasper.servlet.JspServlet | Class name of the servlet to use for JSPs. |
+| server.servlet.jsp.registered           | true | Whether the JSP servlet has to be registered or not. |
+
+Prior to version 1.2, non standard Spring Boot properties where used to define port and address as shown in mapping table below:
+
+| Parameter name until 1.2 | Parameter name since 1.2 compliant with Spring Boot properties |
+| --- | --- |
+| grizzly.http.port | server.port |
+| grizzly.http.host | server.address |
+| grizzly.http.context-path | server.servlet.context-path |
+| grizzly.http.compression-mode | server.compression.enabled |
+| grizzly.http.compressable-mime-types | server.compression.mime-types |
+| grizzly.http.minimum-compression-size | server.compression.min-response-size |
 
 The URI on which the grizzly application handler will be deployed will be constructed as follow given the above parameters:
 
-${grizzly.http.scheme}://${grizzly.http.host}:${grizzly.http.port}/${grizzly.http.context-path}/${grizzly.http.path}
+${grizzly.http.scheme}://${server.address}:${grizzly.http.port}/${server.servlet.context-path}
 
 The above would have given following URI with default parameters: http://0.0.0.0:8080/
 
@@ -63,7 +76,7 @@ Example for Maven:
 <dependency>
     <groupId>be.dabla</groupId>
     <artifactId>grizzly-spring-boot-starter</artifactId>
-    <version>1.1</version>
+    <version>1.2-SNAPSHOT</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>

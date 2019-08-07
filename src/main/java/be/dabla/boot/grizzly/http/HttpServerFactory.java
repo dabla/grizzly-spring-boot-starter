@@ -2,10 +2,10 @@ package be.dabla.boot.grizzly.http;
 
 import be.dabla.boot.grizzly.config.GrizzlyProperties;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.util.function.Consumer;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
-import org.apache.jasper.servlet.JspServlet;
 import org.glassfish.grizzly.http.server.CLStaticHttpHandler;
 import org.glassfish.grizzly.http.server.HttpHandlerRegistration;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -33,12 +33,12 @@ public class HttpServerFactory {
             HttpServer httpServer = aHttpServer()
                     .withScheme(properties.getHttp().getScheme())
                     .withHost(properties.getHttp().getHost())
-                    .withPort(getProperty("http.webserver.port", String.valueOf(properties.getHttp().getPort())))
-                    .withPath(properties.getHttp().getContextPath() + properties.getHttp().getPath())
+                    .withPort(getProperty("server.port", String.valueOf(properties.getHttp().getPort())))
+                    .withPath(properties.getHttp().getContextPath())
                     .withResourceConfig(resourceConfig)
                     .withCompressionMode(properties.getHttp().getCompressionMode())
                     .withCompressableMimeTypes(properties.getHttp().getCompressableMimeTypes())
-                    .withCompressionMinSize(properties.getHttp().getMinimumCompressionSize())
+                    .withCompressionMinSize(properties.getHttp().getMinimumCompressionSize().toBytes())
                     .build();
 
             addHttpHandler(httpServer);
@@ -46,7 +46,7 @@ public class HttpServerFactory {
             addServlets(initializers);
             webappContext.deploy(httpServer);
             return httpServer;
-        } catch (URISyntaxException e) {
+        } catch (UnknownHostException | URISyntaxException e) {
            throw new RuntimeException(e);
         }
     }
@@ -68,8 +68,10 @@ public class HttpServerFactory {
     }
 
     private void addJspServlet() {
-        webappContext.addServlet("JSPContainer", JspServlet.class)
-                     .addMapping(properties.getJsp().getUrlMapping());
+        if (properties.getJsp().isRegistered()) {
+            webappContext.addServlet("JSPContainer", properties.getJsp().getServlet())
+                         .addMapping(properties.getJsp().getUrlMapping());
+        }
     }
 
     private void addHttpHandler(HttpServer httpServer) {

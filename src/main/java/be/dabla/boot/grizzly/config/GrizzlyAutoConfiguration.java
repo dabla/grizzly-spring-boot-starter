@@ -16,6 +16,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +32,12 @@ public class GrizzlyAutoConfiguration {
 
     @Inject
     private ApplicationContext context;
+
+    @Bean
+    @ConditionalOnMissingBean
+    public static ServerProperties serverProperties() {
+        return new ServerProperties();
+    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -52,9 +59,10 @@ public class GrizzlyAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public WebappContext webappContext(GrizzlyProperties properties) {
+    public WebappContext webappContext(ServerProperties properties) {
         LOGGER.info("Running with {} v{}", GrizzlyAutoConfiguration.class.getPackage().getSpecificationTitle(), GrizzlyAutoConfiguration.class.getPackage().getSpecificationVersion());
-        WebappContext webappContext = new WebappContext("WebappContext", properties.getHttp().getContextPath());
+        WebappContext webappContext = new WebappContext(properties.getServlet().getApplicationDisplayName(),
+                                                        properties.getServlet().getContextPath());
         webappContext.setAttribute(SERVLET_CLASSPATH, getProperty("java.class.path"));
         return webappContext;
     }
