@@ -21,8 +21,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static java.lang.System.getProperty;
-import static org.apache.jasper.Constants.SERVLET_CLASSPATH;
 import static org.slf4j.LoggerFactory.getLogger;
 
 @Configuration
@@ -62,8 +60,12 @@ public class GrizzlyAutoConfiguration {
     public WebappContext webappContext(ServerProperties properties) {
         LOGGER.info("Running with {} v{}", GrizzlyAutoConfiguration.class.getPackage().getSpecificationTitle(), GrizzlyAutoConfiguration.class.getPackage().getSpecificationVersion());
         WebappContext webappContext = new WebappContext(properties.getServlet().getApplicationDisplayName(),
-                                                        properties.getServlet().getContextPath());
-        webappContext.setAttribute(SERVLET_CLASSPATH, getProperty("java.class.path"));
+                                                        properties.getServlet().getContextPath()) {
+            @Override
+            public ClassLoader getClassLoader() {
+                return context.getClassLoader();
+            }
+        };
         return webappContext;
     }
 
