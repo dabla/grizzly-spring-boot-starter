@@ -76,12 +76,18 @@ Example for Maven:
 <dependency>
     <groupId>be.dabla</groupId>
     <artifactId>grizzly-spring-boot-starter</artifactId>
-    <version>1.2</version>
+    <version>2.0</version>
+</dependency>
+<!-- Add following dependency to add JSP support in Grizzly -->
+<dependency>
+    <groupId>be.dabla</groupId>
+    <artifactId>grizzly-spring-boot-jasper</artifactId>
+    <version>2.0</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-web</artifactId>
-    <version>2.1.6.RELEASE</version>
+    <version>2.1.7.RELEASE</version>
     <exclusions>
         <exclusion>
             <groupId>org.springframework.boot</groupId>
