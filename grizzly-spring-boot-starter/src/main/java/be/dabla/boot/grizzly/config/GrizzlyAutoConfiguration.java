@@ -10,6 +10,7 @@ import javax.ws.rs.core.Feature;
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.ParamConverter;
+import javax.ws.rs.ext.ParamConverterProvider;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.servlet.WebappContext;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -76,6 +77,7 @@ public class GrizzlyAutoConfiguration {
     }
 
     private ResourceConfig register(ResourceConfig resourceConfig) {
+        registerBeansOfType(resourceConfig, ParamConverterProvider.class);
         registerBeansOfType(resourceConfig, ParamConverter.class);
         registerBeansOfType(resourceConfig, ExceptionMapper.class);
         registerBeansOfType(resourceConfig, Feature.class);
