@@ -20,12 +20,16 @@ public class GrizzlyApplication {
     }
 
     @Bean
-    // Optional, but may be defined if for example additional properties like shown here below have to be passed.
-    public ResourceConfig resourceConfig() {
-        Map<String,Object> properties = new HashMap<>();
-        properties.put("com.sun.jersey.api.json.POJOMappingFeature", "true");
-        properties.put("com.sun.jersey.config.feature.trace", "ALL");
-        return new ResourceConfig().addProperties(properties);
+    public ResourceConfigCustomizer resourceConfigCustomizer() {
+        return new ResourceConfigCustomizer() {
+            @Override
+            public void customize(ResourceConfig resourceConfig) {
+                Map<String,Object> properties = new HashMap<>();
+                properties.put("com.sun.jersey.api.json.POJOMappingFeature", "true");
+                properties.put("com.sun.jersey.config.feature.trace", "ALL");
+                resourceConfig.addProperties(properties);
+            }
+        };
     }
 }
 ```
@@ -76,13 +80,13 @@ Example for Maven:
 <dependency>
     <groupId>be.dabla</groupId>
     <artifactId>grizzly-spring-boot-starter</artifactId>
-    <version>2.1</version>
+    <version>2.3</version>
 </dependency>
 <!-- Add following dependency to add JSP support in Grizzly -->
 <dependency>
     <groupId>be.dabla</groupId>
     <artifactId>grizzly-spring-boot-jasper</artifactId>
-    <version>2.1</version>
+    <version>2.3</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>
