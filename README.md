@@ -80,18 +80,18 @@ Example for Maven:
 <dependency>
     <groupId>be.dabla</groupId>
     <artifactId>grizzly-spring-boot-starter</artifactId>
-    <version>2.3</version>
+    <version>2.4</version>
 </dependency>
 <!-- Add following dependency to add JSP support in Grizzly -->
 <dependency>
     <groupId>be.dabla</groupId>
     <artifactId>grizzly-spring-boot-jasper</artifactId>
-    <version>2.3</version>
+    <version>2.4</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-web</artifactId>
-    <version>2.1.7.RELEASE</version>
+    <version>2.4.2</version>
     <exclusions>
         <exclusion>
             <groupId>org.springframework.boot</groupId>
@@ -102,3 +102,10 @@ Example for Maven:
 ```
 
 Maven artifact can be found on [Maven Central](https://mvnrepository.com/artifact/be.dabla/grizzly-spring-boot-starter).
+
+## Migration to Grizzly 3.0.0
+
+We're now awaiting for Spring Boot to migrate to the new jakarta serlvet api,
+which requires the usage of the new package names (e.g. jakarta.servlet instead of javax.servlet).
+
+Once [Spring Boot supports Jakarta EE9](https://github.com/spring-projects/spring-framework/issues/25354), we will upgrade to Grizzly 3.x.x.
