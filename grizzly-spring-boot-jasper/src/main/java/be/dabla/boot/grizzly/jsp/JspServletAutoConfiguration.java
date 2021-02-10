@@ -1,7 +1,12 @@
 package be.dabla.boot.grizzly.jsp;
 
 import be.dabla.boot.grizzly.config.GrizzlyProperties;
+
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
 import javax.servlet.http.HttpServlet;
@@ -33,7 +38,9 @@ import static be.dabla.boot.grizzly.jsp.Constants.DEFAULT_JSP_SERVLET_BEAN_NAME;
 import static be.dabla.boot.grizzly.jsp.Constants.DEFAULT_JSP_SERVLET_REGISTRATION_BEAN_NAME;
 import static java.lang.Class.forName;
 import static java.lang.System.getProperty;
+import static java.nio.file.Paths.get;
 import static java.util.Arrays.asList;
+import static java.util.Optional.ofNullable;
 import static javax.servlet.jsp.JspFactory.setDefaultFactory;
 import static org.apache.jasper.Constants.SERVLET_CLASSPATH;
 import static org.springframework.boot.autoconfigure.condition.ConditionMessage.Style.QUOTE;
@@ -121,7 +128,17 @@ public class JspServletAutoConfiguration {
             HttpServlet jspServlet = HttpServlet.class.cast(forName(grizzlyProperties.getJsp().getServlet()).newInstance());
             servletContext.setAttribute(InstanceManager.class.getName(), instanceManager);
             servletContext.setAttribute(SERVLET_CLASSPATH, getProperty("java.class.path"));
+            if (servletContext.getAttribute("javax.servlet.context.tempdir") == null) {
+                servletContext.setAttribute("javax.servlet.context.tempdir", new File(getTempDirectory(grizzlyProperties)));
+            }
             return jspServlet;
+        }
+
+        private static String getTempDirectory(GrizzlyProperties grizzlyProperties) {
+            return ofNullable(grizzlyProperties.getJsp().getTemporaryDirectory())
+                  .orElseGet(() -> ofNullable(getProperty("scratchdir"))
+                  .orElseGet(() -> ofNullable(getProperty("java.io.tmpdir"))
+                  .orElseGet(() -> get(".").toAbsolutePath().normalize().toString())));
         }
     }
 }

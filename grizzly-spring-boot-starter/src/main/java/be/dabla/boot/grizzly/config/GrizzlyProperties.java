@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.unit.DataSize;
 
+import static java.nio.file.Paths.get;
 import static java.util.Optional.ofNullable;
 import static org.glassfish.grizzly.http.CompressionConfig.CompressionMode.OFF;
 import static org.glassfish.grizzly.http.CompressionConfig.CompressionMode.ON;
@@ -91,6 +92,7 @@ public class GrizzlyProperties {
 
     public class Jsp {
         private String[] urlMapping = new String[] { "/*.jsp" };
+        private String temporaryDirectory;
 
         public String[] getUrlMapping() {
             return urlMapping;
@@ -106,6 +108,14 @@ public class GrizzlyProperties {
 
         public String getServlet() {
             return serverProperties.getServlet().getJsp().getClassName();
+        }
+
+        public String getTemporaryDirectory() {
+            return temporaryDirectory;
+        }
+
+        public void setTemporaryDirectory(String temporaryDirectory) {
+            this.temporaryDirectory = temporaryDirectory;
         }
     }
 
