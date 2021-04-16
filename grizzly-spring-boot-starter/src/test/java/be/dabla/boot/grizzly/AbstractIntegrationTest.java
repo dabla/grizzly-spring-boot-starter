@@ -1,6 +1,5 @@
 package be.dabla.boot.grizzly;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.WebServer;
@@ -9,9 +8,9 @@ import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import javax.inject.Inject;
 
 import static java.util.Optional.ofNullable;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@SpringBootTest(webEnvironment = DEFINED_PORT)
 public abstract class AbstractIntegrationTest {
     @Inject
     private ServletWebServerFactory webServerFactory;
@@ -20,12 +19,5 @@ public abstract class AbstractIntegrationTest {
     @BeforeEach
     synchronized void setUp() {
         webServer = ofNullable(webServer).orElse(webServerFactory.getWebServer());
-        webServer.start();
-    }
-
-    @AfterAll
-    static void tearDown() {
-        webServer.stop();
-        webServer = null;
     }
 }
