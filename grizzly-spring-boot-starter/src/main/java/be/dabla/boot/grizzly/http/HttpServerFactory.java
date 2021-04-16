@@ -1,48 +1,50 @@
 package be.dabla.boot.grizzly.http;
 
 import be.dabla.boot.grizzly.config.GrizzlyProperties;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.function.Consumer;
-import javax.inject.Inject;
-import javax.servlet.ServletException;
-import org.glassfish.grizzly.http.server.CLStaticHttpHandler;
-import org.glassfish.grizzly.http.server.HttpHandlerRegistration;
+import be.dabla.boot.grizzly.http.handler.RegisterableHttpHandler;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.servlet.WebappContext;
-import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
+
+import javax.servlet.ServletException;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.function.Consumer;
 
 import static be.dabla.boot.grizzly.http.HttpServerBuilder.aHttpServer;
 import static java.lang.System.getProperty;
 import static java.util.stream.Stream.of;
-import static org.glassfish.grizzly.http.server.HttpHandlerRegistration.builder;
 import static org.slf4j.LoggerFactory.getLogger;
 
 public class HttpServerFactory {
     private static final Logger LOGGER = getLogger(HttpServerFactory.class);
 
-    @Inject
-    private GrizzlyProperties properties;
-    @Inject
-    private WebappContext webappContext;
+    private final GrizzlyProperties properties;
+    private final WebappContext webappContext;
+    private final Collection<RegisterableHttpHandler> registeredHttpHandlers;
 
-    public HttpServer create(ResourceConfig resourceConfig, ServletContextInitializer... initializers) {
+    public HttpServerFactory(GrizzlyProperties properties, WebappContext webappContext, Collection<RegisterableHttpHandler> registeredHttpHandlers) {
+        this.properties = properties;
+        this.webappContext = webappContext;
+        this.registeredHttpHandlers = registeredHttpHandlers;
+    }
+
+    public HttpServer create(ServletContextInitializer... initializers) {
         try {
             HttpServer httpServer = aHttpServer()
                     .withScheme(properties.getHttp().getScheme())
                     .withHost(properties.getHttp().getHost())
                     .withPort(getProperty("server.port", String.valueOf(properties.getHttp().getPort())))
                     .withPath(properties.getHttp().getContextPath())
-                    .withResourceConfig(resourceConfig)
                     .withCompressionMode(properties.getHttp().getCompressionMode())
                     .withCompressableMimeTypes(properties.getHttp().getCompressableMimeTypes())
                     .withCompressionMinSize(properties.getHttp().getMinimumCompressionSize().toBytes())
                     .build();
 
-            addHttpHandler(httpServer);
             addServlets(initializers);
+            registeredHttpHandlers.forEach(registeredHttpHandler -> registeredHttpHandler.register(httpServer));
             webappContext.deploy(httpServer);
             return httpServer;
         } catch (URISyntaxException | IOException e) {
@@ -64,18 +66,5 @@ public class HttpServerFactory {
                 LOGGER.warn("{}: {}", e.getClass().getName(), e.getMessage());
             }
         };
-    }
-
-    private void addHttpHandler(HttpServer httpServer) {
-        CLStaticHttpHandler httpHandler = new CLStaticHttpHandler(getClass().getClassLoader(), properties.getHttp().getDocRoot());
-        httpHandler.setFileCacheEnabled(false); // Disable cache because it's very very slow
-
-        for (String urlMapping : properties.getHttp().getUrlMapping()) {
-            HttpHandlerRegistration mapping = builder().contextPath(properties.getHttp().getContextPath())
-                                                       .urlPattern(urlMapping)
-                                                       .build();
-            httpServer.getServerConfiguration()
-                      .addHttpHandler(httpHandler, mapping);
-        }
     }
 }

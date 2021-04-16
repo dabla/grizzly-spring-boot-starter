@@ -10,6 +10,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class HelloResourceIntegrationTest extends AbstractIntegrationTest {
     @Test
     public void sayHello() throws Exception {
-        assertThat(new Scanner(new URL("http://localhost:8080/grizzly/hello/world").openStream(), "UTF-8").useDelimiter("\\A").next()).isEqualTo("Hello world!");
+        assertThat(new Scanner(new URL("http://localhost:" + webServer.getPort() + "/grizzly/api/hello/world").openStream(), "UTF-8").useDelimiter("\\A").next()).isEqualTo("Hello world!");
     }
 }

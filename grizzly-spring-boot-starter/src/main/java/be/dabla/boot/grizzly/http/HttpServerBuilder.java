@@ -1,15 +1,15 @@
 package be.dabla.boot.grizzly.http;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.HashSet;
-import java.util.Set;
 import org.apache.http.client.utils.URIBuilder;
 import org.glassfish.grizzly.http.CompressionConfig;
 import org.glassfish.grizzly.http.CompressionConfig.CompressionMode;
 import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.util.unit.DataSize;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashSet;
+import java.util.Set;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.Runtime.getRuntime;
@@ -53,26 +53,18 @@ public class HttpServerBuilder {
 		return this;
 	}
 	
-	public HttpServerBuilder withPath(String path) {
-		this.uriBuilder.setPath(path);
-		return this;
-	}
-	
-	public BuildableHttpServer withResourceConfig(ResourceConfig resourceConfig) throws URISyntaxException {
-		return new BuildableHttpServer(uriBuilder.build(),
-									   new ResourceConfig(resourceConfig));
+	public BuildableHttpServer withPath(String path) throws URISyntaxException {
+		return new BuildableHttpServer(this.uriBuilder.setPath(path).build());
 	}
 	
 	public static class BuildableHttpServer {
 		private final URI uri;
-		private final ResourceConfig resourceConfig;
 		private CompressionMode compressionMode = OFF;
 		private Long compressionMinSize = DataSize.ofKilobytes(2).toBytes();
 		private Set<String> compressableMimeTypes = emptySet();
 
-		private BuildableHttpServer(URI uri, ResourceConfig resourceConfig) {
+		private BuildableHttpServer(URI uri) {
 			this.uri = uri;
-			this.resourceConfig = resourceConfig;
 		}
 		
 		public BuildableHttpServer withCompressionMode(CompressionMode compressionMode) {
@@ -95,7 +87,7 @@ public class HttpServerBuilder {
 		}
 
 		public HttpServer build() {
-	        final HttpServer httpServer = createHttpServer(uri, resourceConfig, false);
+	        final HttpServer httpServer = createHttpServer(uri, false);
 
 	        getRuntime().addShutdownHook(new Thread(new Runnable() {
 	            @Override
