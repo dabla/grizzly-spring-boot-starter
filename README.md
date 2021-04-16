@@ -103,6 +103,19 @@ Example for Maven:
 
 Maven artifact can be found on [Maven Central](https://mvnrepository.com/artifact/be.dabla/grizzly-spring-boot-starter).
 
+## Using Spring REST controllers instead of Jersey (JAX-RS)
+
+Since version 2.6 it is possible to use the Spring REST controllers instead of the default Jersey JAX-RS implementation.
+To be able to do so, make sure you specify the spring.jersey.application-path property to a specific path which is
+different than the root (e.g. /) otherwise there will be a path conflict and requests will never be able to reach the
+Spring DispatcherServlet.
+
+An example:
+
+```
+spring.jersey.application-path=/api
+```
+
 ## Migration to Grizzly 3.0.0
 
 We're now awaiting for Spring Boot to migrate to the new jakarta serlvet api,
