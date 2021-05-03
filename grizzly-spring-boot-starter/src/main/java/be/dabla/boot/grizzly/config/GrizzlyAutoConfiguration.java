@@ -105,7 +105,7 @@ public class GrizzlyAutoConfiguration {
     }
 
     @Bean
-    public RequestMappingHandlerMapping grizzlyRequestMappingHandlerMapping(RequestMappingHandlerMapping requestMappingHandlerMapping) {
+    public RequestMappingHandlerMapping grizzlyRequestMappingHandlerMapping() {
         return new RequestMappingHandlerMapping() {
             @Override
             protected String initLookupPath(HttpServletRequest request) {
@@ -115,7 +115,7 @@ public class GrizzlyAutoConfiguration {
             }
 
             public int getOrder() {
-                return requestMappingHandlerMapping.getOrder() - 1;
+                return 0;
             }
         };
     }
