@@ -122,3 +122,5 @@ We're now awaiting for Spring Boot to migrate to the new jakarta serlvet api,
 which requires the usage of the new package names (e.g. jakarta.servlet instead of javax.servlet).
 
 Once [Spring Boot supports Jakarta EE9](https://github.com/spring-projects/spring-framework/issues/25354), we will upgrade to Grizzly 3.x.x.
+
+A first milestone of [Spring Boot 3.0.0](https://spring.io/blog/2022/01/20/spring-boot-3-0-0-m1-is-now-available) has been released.
